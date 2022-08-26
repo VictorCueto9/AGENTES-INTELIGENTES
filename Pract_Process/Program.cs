@@ -10,49 +10,88 @@ namespace Pract_Process
     {
         static void Main(string[] args)
         {
-            string x, x_copy;
-            string[] positive, negative;
-            char[]  simbols = new char[] {' ', '+', '-'}; //simbols before x in all cases
-            
+            string x, izq, der;
+            int index, suma_x = 0, suma_ind = 0, suma_x_der = 0, suma_ind_der = 0;
+
             x = Console.ReadLine();
-            x = x.ToLower();
-            //x = x.Replace(' ', ''); trying remove blanck spaces
 
-            if (x[0] == 'x')
-            {
-                x = x.Insert(0, "1"); // if first character is x, add a 1 before x
-            }
+            index = x.IndexOf("=");
 
-            for (int i = 1; i < x.Length; i++)
+            izq = x.Substring(0, index);
+            der = x.Substring(index + 1);
+
+            izq = izq + "a";
+
+            for (int i = 0; i < izq.Length; i++)
             {
-                for(int sim = 0; sim < 3;sim++)
+                if (x[i] == '+')
                 {
-                    if (x[i] == 'x' && x[i - 1] == simbols[sim])
+                    if (x[i + 2] == 'x')
                     {
-                        x = x.Insert(i, "1"); //add a 1 before x due to x
-                        i += 1;
+                        suma_x += int.Parse(izq[i + 1].ToString());
+                    }
+                    else
+                    {
+                        suma_ind += int.Parse(izq[i + 1].ToString());
+                    }
+                }
+                if (x[i] == '-')
+                {
+                    if (x[i + 2] == 'x')
+                    {
+                        suma_x += -int.Parse(izq[i + 1].ToString());
+                    }
+                    else
+                    {
+                        suma_ind += -int.Parse(izq[i + 1].ToString());
                     }
                 }
             }
 
-            Console.WriteLine(x);
+            der = der + "a";
 
-            x_copy = x; //save the same string
-            
-            positive = x.Split('+'); //save positive numbers
-            negative = x.Split('-'); //save negative numbers
-
-            
-
-            /*foreach (var num in positive){
-                Console.WriteLine(num);
+            for (int i = 0; i < der.Length; i++)
+            {
+                if (der[i] == '+')
+                {
+                    if (der[i + 2] == 'x')
+                    {
+                        suma_x_der += int.Parse(der[i + 1].ToString());
+                    }
+                    else
+                    {
+                        suma_ind_der += int.Parse(der[i + 1].ToString());
+                    }
+                }
+                if (der[i] == '-')
+                {
+                    if (der[i + 2] == 'x')
+                    {
+                        suma_x_der += -int.Parse(der[i + 1].ToString());
+                    }
+                    else
+                    {
+                        suma_ind_der += -int.Parse(der[i + 1].ToString());
+                    }
+                }
             }
 
-            foreach (var num in negative)
-            {
-                Console.WriteLine(num);
-            }*/
+            Console.WriteLine("suma x : {0}", suma_x);
+            Console.WriteLine("suma ind : {0}", suma_ind);
 
+            Console.WriteLine("suma x : {0}", suma_x_der);
+            Console.WriteLine("suma ind : {0}", suma_ind_der);
+
+            double resultado;
+            int x_total = 0, inde_total = 0;
+
+            x_total = suma_x - suma_x_der;
+            inde_total = suma_ind_der - suma_ind;
+
+            resultado = (double)inde_total / (double)x_total;
+
+            Console.WriteLine("Resultado {0}", resultado);
+            Console.WriteLine(izq);
 
             Console.ReadLine();
         }

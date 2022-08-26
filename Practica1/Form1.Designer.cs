@@ -29,12 +29,13 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tBecu = new System.Windows.Forms.TextBox();
             this.tBx = new System.Windows.Forms.TextBox();
             this.btcalc = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
+            this.btborrar = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,6 +47,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(799, 100);
             this.panel1.TabIndex = 0;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Bahnschrift SemiBold SemiConden", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label3.Location = new System.Drawing.Point(308, 45);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(226, 25);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Ecuación de Primer Grado";
             // 
             // label1
             // 
@@ -63,9 +75,9 @@
             this.label2.Font = new System.Drawing.Font("Bahnschrift SemiCondensed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(297, 274);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(23, 19);
+            this.label2.Size = new System.Drawing.Size(26, 19);
             this.label2.TabIndex = 2;
-            this.label2.Text = "x :";
+            this.label2.Text = "x =";
             // 
             // tBecu
             // 
@@ -89,7 +101,7 @@
             // btcalc
             // 
             this.btcalc.Font = new System.Drawing.Font("Bahnschrift SemiCondensed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btcalc.Location = new System.Drawing.Point(589, 330);
+            this.btcalc.Location = new System.Drawing.Point(530, 330);
             this.btcalc.Name = "btcalc";
             this.btcalc.Size = new System.Drawing.Size(75, 32);
             this.btcalc.TabIndex = 5;
@@ -97,16 +109,16 @@
             this.btcalc.UseVisualStyleBackColor = true;
             this.btcalc.Click += new System.EventHandler(this.btcalc_Click);
             // 
-            // label3
+            // btborrar
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Bahnschrift SemiBold SemiConden", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label3.Location = new System.Drawing.Point(308, 45);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(226, 25);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Ecuación de Primer Grado";
+            this.btborrar.Font = new System.Drawing.Font("Bahnschrift SemiCondensed", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btborrar.Location = new System.Drawing.Point(251, 330);
+            this.btborrar.Name = "btborrar";
+            this.btborrar.Size = new System.Drawing.Size(114, 32);
+            this.btborrar.TabIndex = 6;
+            this.btborrar.Text = "Borrar Datos";
+            this.btborrar.UseVisualStyleBackColor = true;
+            this.btborrar.Click += new System.EventHandler(this.btborrar_Click);
             // 
             // Form1
             // 
@@ -114,6 +126,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Azure;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btborrar);
             this.Controls.Add(this.btcalc);
             this.Controls.Add(this.tBx);
             this.Controls.Add(this.tBecu);
@@ -138,6 +151,7 @@
         private System.Windows.Forms.TextBox tBecu;
         private System.Windows.Forms.TextBox tBx;
         private System.Windows.Forms.Button btcalc;
+        private System.Windows.Forms.Button btborrar;
     }
 }
 
