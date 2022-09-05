@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -27,8 +28,8 @@ namespace Laberinto
             //crear matriz de 1 y 0 para simulacioines
             //int[,] matriz = new int[11, 11];
 
-            lvcolas.Items.Clear();
-            lvpila.Items.Clear();
+            lb_cola.Items.Clear();
+            lb_pila.Items.Clear();
 
             int[,] checado = new int[11, 11];
 
@@ -49,12 +50,13 @@ namespace Laberinto
             //****************COLA******************
 
             Queue C = new Queue();
+            Queue aux_cola;
             bool solucion_cola = false, solucion_pila = false;
 
             C.Enqueue("0,0"); // poner la lista en el inicio del laberinto
             int fila, col;
 
-            string coordenada;
+            string coordenada, cadena_cola = " ", cadena_pila = " ";
             string fila_str, col_str;
 
             int index;
@@ -71,13 +73,25 @@ namespace Laberinto
 
                 checado[fila, col] = 1; // 1 es que ya se guradó esa posicion
 
+                //paso 2
+
                 if (checado[10, 10]==1)
                 {
                     solucion_cola = true;
                     break;
                 }
 
-                //paso 2
+                aux_cola = new Queue(C);
+
+                while (aux_cola.Count != 0)
+                {
+                    cadena_cola += " " + aux_cola.Dequeue().ToString();
+                }
+
+                lb_cola.Items.Add(cadena_cola);
+                cadena_cola = " ";
+
+                //paso 3
                 if (col < 10 && matriz[fila, col + 1] == 0 && checado[fila, col + 1] != 1) // checa si hay a la derecha
                 {
                     fila_str = fila.ToString();
@@ -107,9 +121,11 @@ namespace Laberinto
                     checado[fila - 1, col] = 1;
                 }
 
-                //C.Dequeue();
+                //paso 4
+
+                C.Dequeue();
                 
-                lvcolas.Items.Add(C.Dequeue().ToString());
+                //lvcolas.Items.Add(C.Dequeue().ToString());
 
 
                 if (C.Count == 0)
@@ -137,6 +153,8 @@ namespace Laberinto
             }
 
             Stack P = new Stack();
+            Stack aux_pila;
+
             P.Push("0,0");
 
             while (!solucion_pila)
@@ -158,7 +176,19 @@ namespace Laberinto
                 }
 
                 //paso 3
-                lvpila.Items.Add(P.Pop().ToString());
+
+                aux_pila = new Stack(P);
+                while (aux_pila.Count != 0)
+                {
+                    //cadena_pila += " " + aux_pila.Pop().ToString();
+                    cadena_pila = cadena_pila.Insert(0, " "+aux_pila.Pop().ToString());
+                }
+                lb_pila.Items.Add(cadena_pila);
+                cadena_pila = " ";
+
+                P.Pop();
+
+                //lvpila.Items.Add(P.Pop().ToString());
 
                 //paos 4
 
