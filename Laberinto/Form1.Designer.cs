@@ -31,9 +31,10 @@
             this.pB = new System.Windows.Forms.PictureBox();
             this.btlaberinto = new System.Windows.Forms.Button();
             this.btsolucion = new System.Windows.Forms.Button();
-            this.lbcolas = new System.Windows.Forms.ListBox();
-            this.lbpilas = new System.Windows.Forms.ListBox();
             this.lvcolas = new System.Windows.Forms.ListView();
+            this.lbcola = new System.Windows.Forms.Label();
+            this.lbpila = new System.Windows.Forms.Label();
+            this.lvpila = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.pB)).BeginInit();
             this.SuspendLayout();
             // 
@@ -65,44 +66,53 @@
             this.btsolucion.UseVisualStyleBackColor = true;
             this.btsolucion.Click += new System.EventHandler(this.btsolucion_Click);
             // 
-            // lbcolas
-            // 
-            this.lbcolas.FormattingEnabled = true;
-            this.lbcolas.Items.AddRange(new object[] {
-            " "});
-            this.lbcolas.Location = new System.Drawing.Point(634, 366);
-            this.lbcolas.Name = "lbcolas";
-            this.lbcolas.Size = new System.Drawing.Size(154, 147);
-            this.lbcolas.TabIndex = 3;
-            this.lbcolas.UseTabStops = false;
-            // 
-            // lbpilas
-            // 
-            this.lbpilas.FormattingEnabled = true;
-            this.lbpilas.Items.AddRange(new object[] {
-            " "});
-            this.lbpilas.Location = new System.Drawing.Point(634, 533);
-            this.lbpilas.Name = "lbpilas";
-            this.lbpilas.Size = new System.Drawing.Size(154, 108);
-            this.lbpilas.TabIndex = 4;
-            // 
             // lvcolas
             // 
             this.lvcolas.HideSelection = false;
-            this.lvcolas.Location = new System.Drawing.Point(634, 26);
+            this.lvcolas.Location = new System.Drawing.Point(634, 49);
             this.lvcolas.Name = "lvcolas";
-            this.lvcolas.Size = new System.Drawing.Size(154, 300);
+            this.lvcolas.Size = new System.Drawing.Size(154, 284);
             this.lvcolas.TabIndex = 5;
             this.lvcolas.UseCompatibleStateImageBehavior = false;
+            // 
+            // lbcola
+            // 
+            this.lbcola.AutoSize = true;
+            this.lbcola.Font = new System.Drawing.Font("Bahnschrift SemiBold SemiConden", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbcola.Location = new System.Drawing.Point(631, 22);
+            this.lbcola.Name = "lbcola";
+            this.lbcola.Size = new System.Drawing.Size(49, 23);
+            this.lbcola.TabIndex = 6;
+            this.lbcola.Text = "COLA";
+            // 
+            // lbpila
+            // 
+            this.lbpila.AutoSize = true;
+            this.lbpila.Font = new System.Drawing.Font("Bahnschrift SemiBold SemiConden", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbpila.Location = new System.Drawing.Point(631, 349);
+            this.lbpila.Name = "lbpila";
+            this.lbpila.Size = new System.Drawing.Size(43, 23);
+            this.lbpila.TabIndex = 7;
+            this.lbpila.Text = "PILA";
+            // 
+            // lvpila
+            // 
+            this.lvpila.HideSelection = false;
+            this.lvpila.Location = new System.Drawing.Point(634, 375);
+            this.lvpila.Name = "lvpila";
+            this.lvpila.Size = new System.Drawing.Size(154, 284);
+            this.lvpila.TabIndex = 8;
+            this.lvpila.UseCompatibleStateImageBehavior = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 689);
+            this.Controls.Add(this.lvpila);
+            this.Controls.Add(this.lbpila);
+            this.Controls.Add(this.lbcola);
             this.Controls.Add(this.lvcolas);
-            this.Controls.Add(this.lbpilas);
-            this.Controls.Add(this.lbcolas);
             this.Controls.Add(this.btsolucion);
             this.Controls.Add(this.btlaberinto);
             this.Controls.Add(this.pB);
@@ -110,6 +120,7 @@
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pB)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -118,9 +129,10 @@
         private System.Windows.Forms.PictureBox pB;
         private System.Windows.Forms.Button btlaberinto;
         private System.Windows.Forms.Button btsolucion;
-        private System.Windows.Forms.ListBox lbcolas;
-        private System.Windows.Forms.ListBox lbpilas;
         private System.Windows.Forms.ListView lvcolas;
+        private System.Windows.Forms.Label lbcola;
+        private System.Windows.Forms.Label lbpila;
+        private System.Windows.Forms.ListView lvpila;
     }
 }
 

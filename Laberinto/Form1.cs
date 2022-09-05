@@ -28,6 +28,7 @@ namespace Laberinto
             //int[,] matriz = new int[11, 11];
 
             lvcolas.Items.Clear();
+            lvpila.Items.Clear();
 
             int[,] checado = new int[11, 11];
 
@@ -48,7 +49,7 @@ namespace Laberinto
             //****************COLA******************
 
             Queue C = new Queue();
-            bool solucion = false;
+            bool solucion_cola = false, solucion_pila = false;
 
             C.Enqueue("0,0"); // poner la lista en el inicio del laberinto
             int fila, col;
@@ -59,7 +60,7 @@ namespace Laberinto
             int index;
 
             
-            while (!solucion)
+            while (!solucion_cola)
             {
                 //paso 1
                 coordenada = C.Peek().ToString();
@@ -72,7 +73,7 @@ namespace Laberinto
 
                 if (checado[10, 10]==1)
                 {
-                    solucion = true;
+                    solucion_cola = true;
                     break;
                 }
 
@@ -113,26 +114,32 @@ namespace Laberinto
 
                 if (C.Count == 0)
                 {
-                    MessageBox.Show("No hay solución");
+                    //MessageBox.Show("No hay solución");
+                    solucion_cola = false;
                     break;
                 }
 
-                solucion = false;
+                solucion_cola = false;
 
-            }
-
-            if (solucion)
-            {
-                MessageBox.Show("Solución encontrada");
             }
 
 
             //******************PILA******************
-            /*
+
+            //genera la matriz con ceros
+
+            for (int i = 0; i < 11; i++)
+            {
+                for (int j = 0; j < 11; j++)
+                {
+                    checado[i, j] = 0;
+                }
+            }
+
             Stack P = new Stack();
             P.Push("0,0");
 
-            while (!solucion)
+            while (!solucion_pila)
             {
                 //paso 1
                 coordenada = P.Peek().ToString();
@@ -146,12 +153,12 @@ namespace Laberinto
                 //paso 2
                 if (fila == 10 && col == 10)
                 {
-                    solucion = true;
+                    solucion_pila = true;
                     break;
                 }
 
                 //paso 3
-                lvcolas.Items.Add(P.Pop().ToString());
+                lvpila.Items.Add(P.Pop().ToString());
 
                 //paos 4
 
@@ -186,18 +193,23 @@ namespace Laberinto
 
                 if (P.Count == 0)
                 {
-                    MessageBox.Show("No hay solución");
+                    //MessageBox.Show("No hay solución");
+                    solucion_pila = false;
                     break;
                 }
 
-                solucion = false;
+                solucion_pila = false;
 
             }
 
-            if (solucion)
+            if (solucion_cola && solucion_pila)
             {
                 MessageBox.Show("Solución encontrada");
-            }*/
+            }
+            else
+            {
+                MessageBox.Show("No hay solución");
+            }
         }
 
         private void btlaberinto_Click(object sender, EventArgs e)
