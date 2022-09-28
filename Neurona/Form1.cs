@@ -16,10 +16,10 @@ namespace Neurona
     public partial class Form1 : Form
     {
         int entrada = 0, comb_z = 0, comb_o = 0, cols, rows;
-        double combinaciones, sum, umbral;
+        double combinaciones; decimal sum, umbral;
         string column_name = "";
         bool zeros = true, ones = false;
-        int[] pesos;
+        decimal[] pesos;
 
         public Form1()
         {
@@ -37,12 +37,12 @@ namespace Neurona
         {
             if (ObtenerUmbral() && entrada > 0)
             {
-                pesos = new int[entrada]; // vector para almacenar pesos de tamano del num. de entradas
+                pesos = new decimal[entrada]; // vector para almacenar pesos de tamano del num. de entradas
 
                 //obtener los datos del dgvpesos y almacenarlos en el vector pesos
                 for (int j = 0; j < entrada; j++)
                 {
-                    pesos[j] = Convert.ToInt16(dgvpesos.Rows[j].Cells[0].Value);
+                    pesos[j] = Convert.ToDecimal(dgvpesos.Rows[j].Cells[0].Value);
                 }
 
                 //**Sumatoria**
@@ -53,12 +53,13 @@ namespace Neurona
                     sum = 0;
                     for (int i = 0; i < cols; i++)
                     {
-                        sum += Convert.ToDouble(dgvverdad.Rows[j].Cells[i].Value) * pesos[i];
+                        sum += Convert.ToDecimal(dgvverdad.Rows[j].Cells[i].Value) * pesos[i];
                     }
-                    if (sum > umbral)
-                        dgvverdad.Rows[j].Cells[cols].Value = 1;
-                    else
+                    //MessageBox.Show(sum.ToString());
+                    if (sum <= umbral)
                         dgvverdad.Rows[j].Cells[cols].Value = 0;
+                    else if (sum > umbral)
+                        dgvverdad.Rows[j].Cells[cols].Value = 1;
                 }
 
                 //pintar celdas de la salida
@@ -177,7 +178,7 @@ namespace Neurona
         {
             try
             {
-                umbral = Convert.ToDouble(tbumbral.Text);
+                umbral = Convert.ToDecimal(tbumbral.Text);
                 return true;
             }
             catch
