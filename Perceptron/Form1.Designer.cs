@@ -140,7 +140,7 @@
             this.Controls.Add(this.dgverdad);
             this.Controls.Add(this.cbproblema);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Perceptrón";
             ((System.ComponentModel.ISupportInitialize)(this.dgverdad)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

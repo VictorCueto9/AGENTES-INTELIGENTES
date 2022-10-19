@@ -14,7 +14,7 @@ namespace Perceptron
     {
         string column_name = "";
         char _clase;
-        double combinaciones, umbral, valor;
+        double combinaciones, umbral;
         int cols, rows, comb_z = 0, comb_o = 0, entrada;
         bool zeros = true, ones = false, esIgual = true, correcto =  false;
         public Form1()
@@ -25,29 +25,24 @@ namespace Perceptron
         private void btperceptron_Click(object sender, EventArgs e)
         {
             double[] peso = new double[entrada];
-            double[] newpeso = new double[entrada];
             int fila = 0, epoca = 1;
             double ycalc, aux;
+
             peso = generaAleatorios();
+            imprimeList(peso, epoca, false);
+            lbresultados.Items.Add("Epoca = " + epoca.ToString());
+            lbresultados.Items.Add("");
 
-            for (int i = 0; i < entrada; i++)
-            {
-                lbresultados.Items.Add(peso[i].ToString());
-            }
-            lbresultados.Items.Add("umbral" + umbral.ToString());
-
-            while (fila != dgverdad.Rows.Count && epoca < 10)
+            while (fila != dgverdad.Rows.Count && epoca < 100)
             {
                 ycalc = evalua(peso, fila);
-                lbresultados.Items.Add("valor de ycalc: "+ycalc.ToString());
+                lbresultados.Items.Add("Entrada: "+fila.ToString());
                 esIgual = verifica(ycalc, fila);
                 if (esIgual)
                 {
-                    lbresultados.Items.Add("es igual con fila: "+fila.ToString());
                 }
                 else
                 {
-                    lbresultados.Items.Add("es dif con fila: " + fila.ToString());
                     peso = aprendizaje(peso, _clase, fila);
                 }
                 fila++;
@@ -56,28 +51,25 @@ namespace Perceptron
                     if (verificaResultado(peso))
                     {
                         correcto = true;
-                        lbresultados.Items.Add("TODO CHIDO");
+                        imprimeList(peso, epoca, false);
                         break;
                     }
                     else
                     {
                         fila = 0;
                         epoca += 1;
-                        lbresultados.Items.Add("NUEVA EPOCA");
+                        imprimeList(peso, epoca, false);
+                        lbresultados.Items.Add("Epoca = " + epoca.ToString());
+                        lbresultados.Items.Add("");
                     }
                 }
-                if(epoca > 9)
+                if(epoca >= 100)
                 {
-                    MessageBox.Show("No hay solucion");
+                    MessageBox.Show("Parametros NO encontrados");
                     correcto = false;
                     break;
                 }
-                lbresultados.Items.Add("Pesos:");
-                for (int i = 0; i < entrada; i++)
-                {
-                    lbresultados.Items.Add(peso[i].ToString());
-                }
-                lbresultados.Items.Add("umbral: " + umbral.ToString());
+                imprimeList(peso, epoca, false);
             }
 
             if (correcto)
@@ -94,10 +86,33 @@ namespace Perceptron
                     aux = evalua(peso, j);
                     dgverdad.Rows[j].Cells[entrada + 1].Value = aux > 0 ? 1 : -1;
                 }
-                lbresultados.Items.Add("MAMASTE");
             }
-            lbresultados.Items.Add("Epocas: " + epoca.ToString());
 
+            pintaColum(false);
+            lbresultados.Items.Add("");
+            lbresultados.Items.Add("Parametros finales:");
+            imprimeList(peso, epoca, true);
+        }
+        public void imprimeList(double[] peso, int epoca, bool impEpc)
+        {
+            if (impEpc)
+            {
+                for (int i = 0; i < entrada; i++)
+                {
+                    lbresultados.Items.Add("W[" + i.ToString() + "]" + " = " + peso[i].ToString());
+                }
+                lbresultados.Items.Add("Umbral = " + umbral.ToString());
+                lbresultados.Items.Add("Epocas: " + epoca.ToString());
+            }
+            else
+            {
+                for (int i = 0; i < entrada; i++)
+                {
+                    lbresultados.Items.Add("W[" + i.ToString() + "]" + " = " + peso[i].ToString());
+                }
+                lbresultados.Items.Add("Umbral = " + umbral.ToString());
+            }
+            lbresultados.Items.Add("");
         }
         public bool verificaResultado(double[] peso)
         {
@@ -119,13 +134,9 @@ namespace Perceptron
             double[] newpesos = new double[entrada];
             double[] deltax = new double[entrada];
 
-            lbresultados.Items.Add("aprendizaje:");
-            lbresultados.Items.Add(clase + delta.ToString());
-
             for (int i = 0; i < peso.Length; i++)
             {
                 deltax[i] = delta * Convert.ToDouble(dgverdad.Rows[fila].Cells[i].Value);
-                lbresultados.Items.Add(deltax[i].ToString());
             }
             for (int i = 0; i < peso.Length; i++)
             {
@@ -139,13 +150,12 @@ namespace Perceptron
         {
             _clase = Convert.ToDouble(dgverdad.Rows[fila].Cells[entrada].Value) == -1 ? 'A' : 'B';
             value = value > 0 ? 1 : -1;
-            valor = value;
             return value == Convert.ToDouble(dgverdad.Rows[fila].Cells[entrada].Value);
         }
 
         private void btclear_Click(object sender, EventArgs e)
         {
-            //dgverdad.Columns.Clear();
+            dgverdad.Columns.Clear();
             lbresultados.Items.Clear();
         }
 
@@ -163,16 +173,12 @@ namespace Perceptron
         public double[] generaAleatorios()
         {
             double[] pesos = new double[entrada];
-            /*Random aleat = new Random();
+            Random aleat = new Random();
             for(int i = 0; i < entrada; i++)
             {
                 pesos[i] = Math.Round(aleat.NextDouble(),2);
             }
-            umbral = Math.Round(aleat.NextDouble(), 2);*/
-
-            pesos[0] = 0.64;
-            pesos[1] = 0.06;
-            umbral = 0;
+            umbral = Math.Round(aleat.NextDouble(), 2);
 
             return pesos;
         }
@@ -309,10 +315,7 @@ namespace Perceptron
             }
 
             //pintar celdas de la salida
-            for (int j = 0; j < rows; j++)
-            {
-                dgverdad.Rows[j].Cells[cols].Style.BackColor = Color.Beige;
-            }
+            pintaColum(true);
         }
         public void llenaXor()
         {
@@ -325,10 +328,7 @@ namespace Perceptron
             }
 
             //pintar celdas de la salida
-            for (int j = 0; j < rows; j++)
-            {
-                dgverdad.Rows[j].Cells[cols].Style.BackColor = Color.Beige;
-            }
+            pintaColum(true);
         }
         public void llenaMayoria()
         {
@@ -341,20 +341,17 @@ namespace Perceptron
                     valor = Convert.ToInt32(dgverdad.Rows[j].Cells[i].Value);
                     if (valor == 1)
                         c_ones += 1;
-                    else //if(valor == 0)
+                    else
                         c_zeros += 1;
                 }
                 if (c_ones > c_zeros)
                     dgverdad.Rows[j].Cells[cols].Value = 1;
-                else //if (c_ones < c_zeros)
+                else
                     dgverdad.Rows[j].Cells[cols].Value = -1;
             }
 
             //pintar celdas de la salida
-            for (int j = 0; j < rows; j++)
-            {
-                dgverdad.Rows[j].Cells[cols].Style.BackColor = Color.Beige;
-            }
+            pintaColum(true);
         }
         public void llenaParidad()
         {
@@ -375,10 +372,7 @@ namespace Perceptron
             }
 
             //pintar celdas de la salida
-            for (int j = 0; j < rows; j++)
-            {
-                dgverdad.Rows[j].Cells[cols].Style.BackColor = Color.Beige;
-            }
+            pintaColum(true);
         }
         public void llenaEjemplo()
         {
@@ -417,10 +411,19 @@ namespace Perceptron
                     dgverdad.Rows[j].Cells[2].Value = 1;
                 else
                     dgverdad.Rows[j].Cells[2].Value = -1;
-
-                dgverdad.Rows[j].Cells[2].Style.BackColor = Color.Beige;
             }
+            pintaColum(true);
 
+        }
+        public void pintaColum(bool y)
+        {
+            for (int j = 0; j < dgverdad.Rows.Count; j++)
+            {
+                if (y)
+                    dgverdad.Rows[j].Cells[entrada].Style.BackColor = Color.Beige;
+                else
+                    dgverdad.Rows[j].Cells[entrada + 1].Style.BackColor = Color.LightSkyBlue;
+            }
         }
     }
 }
