@@ -62,7 +62,7 @@ namespace Perceptron_Iris_Plant
                 i++;
             }
 
-            dgverdad.Rows[row].Cells[5].Value = row + 1 <= 50 ? -1 : 1;
+            dgverdad.Rows[row].Cells[entrada].Value = row + 1 <= 50 ? -1 : 1;
         }
         public double[] getDoubles(string[] cadena)
         {
@@ -72,9 +72,7 @@ namespace Perceptron_Iris_Plant
             foreach (string num in cadena)
             {
                 if (!num.Contains("I"))
-                {
                     doubles[i] = Convert.ToDouble(num);
-                }
                 i++;
             }
 
@@ -90,14 +88,10 @@ namespace Perceptron_Iris_Plant
                 StreamReader sr = new StreamReader("iris.txt");
                 line = sr.ReadLine();
                 while (line != null &&  aux < 100)
-                {
-                    //lbresultados.Items.Add(line);
-
+                { 
                     division = line.Split(',');
                     fillCells(getDoubles(division), aux);
-
                     line = sr.ReadLine();
-                    
                     aux++;
                 }
                 sr.Close();
@@ -111,7 +105,6 @@ namespace Perceptron_Iris_Plant
                 {
                     if (aux < 50 || aux > 99)
                     {
-                        //lbresultados.Items.Add(line);
                         division = line.Split(',');
                         fillCells(getDoubles(division), row);
                         row++;
@@ -130,7 +123,6 @@ namespace Perceptron_Iris_Plant
                 {
                     if (aux > 49)
                     {
-                        //lbresultados.Items.Add(line);
                         division = line.Split(',');
                         fillCells(getDoubles(division), row);
                         row++;
@@ -140,6 +132,7 @@ namespace Perceptron_Iris_Plant
                 }
                 sr.Close();
             }
+            pintaColum(true);
         }
         private void cbplants_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -184,13 +177,11 @@ namespace Perceptron_Iris_Plant
                 ycalc = evalua(peso, fila);
                 lbresultados.Items.Add("Entrada: " + fila.ToString());
                 esIgual = verifica(ycalc, fila);
-                if (esIgual)
-                {
-                }
+
+                if (esIgual) { }
                 else
-                {
                     peso = aprendizaje(peso, _clase, fila);
-                }
+
                 fila++;
                 if (fila == dgverdad.Rows.Count)
                 {
@@ -221,9 +212,7 @@ namespace Perceptron_Iris_Plant
             if (correcto)
             {
                 for (int j = 0; j < dgverdad.Rows.Count; j++)
-                {
                     dgverdad.Rows[j].Cells[entrada + 1].Value = dgverdad.Rows[j].Cells[entrada].Value;
-                }
             }
             else
             {
@@ -244,18 +233,16 @@ namespace Perceptron_Iris_Plant
             if (impEpc)
             {
                 for (int i = 0; i < entrada - 1; i++)
-                {
                     lbresultados.Items.Add("W[" + i.ToString() + "]" + " = " + peso[i].ToString());
-                }
+
                 lbresultados.Items.Add("Umbral = " + umbral.ToString());
                 lbresultados.Items.Add("Epocas: " + epoca.ToString());
             }
             else
             {
                 for (int i = 0; i < entrada - 1; i++)
-                {
                     lbresultados.Items.Add("W[" + i.ToString() + "]" + " = " + peso[i].ToString());
-                }
+
                 lbresultados.Items.Add("Umbral = " + umbral.ToString());
             }
             lbresultados.Items.Add("");
@@ -314,16 +301,13 @@ namespace Perceptron_Iris_Plant
         {
             double[] pesos = new double[entrada - 1];
             Random aleat = new Random();
+
             for (int i = 0; i < entrada - 1; i++)
             {
                 pesos[i] = Math.Round(aleat.NextDouble(), 2);
             }
             umbral = Math.Round(aleat.NextDouble(), 2);
-            /*pesos[0] = 0.84;
-            pesos[1] = 0.54;
-            pesos[2] = 0.4;
-            pesos[3] = 0.95;
-            umbral = 0.88;*/
+
             return pesos;
         }
         public void pintaColum(bool y)

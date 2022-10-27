@@ -63,13 +63,15 @@
             // 
             // btperceptron
             // 
+            this.btperceptron.BackColor = System.Drawing.Color.OliveDrab;
             this.btperceptron.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btperceptron.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btperceptron.Location = new System.Drawing.Point(16, 107);
             this.btperceptron.Name = "btperceptron";
             this.btperceptron.Size = new System.Drawing.Size(113, 65);
             this.btperceptron.TabIndex = 2;
             this.btperceptron.Text = "Perceptrón";
-            this.btperceptron.UseVisualStyleBackColor = true;
+            this.btperceptron.UseVisualStyleBackColor = false;
             this.btperceptron.Click += new System.EventHandler(this.btperceptron_Click);
             // 
             // lbdatos
