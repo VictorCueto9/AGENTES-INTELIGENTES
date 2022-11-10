@@ -71,9 +71,9 @@
             // 
             // lbres
             // 
-            this.lbres.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbres.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbres.FormattingEnabled = true;
-            this.lbres.ItemHeight = 18;
+            this.lbres.ItemHeight = 14;
             this.lbres.Items.AddRange(new object[] {
             " "});
             this.lbres.Location = new System.Drawing.Point(323, 38);
@@ -106,7 +106,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(500, 301);
+            this.ClientSize = new System.Drawing.Size(499, 301);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lbres);

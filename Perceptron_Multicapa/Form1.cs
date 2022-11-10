@@ -19,25 +19,77 @@ namespace Perceptron_Multicapa
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int fila = 1;
+            if (rbxor.Checked)
+            {
+                Red XOR = new Red();
+                XOR = netXOR(XOR);
+                activeNet(XOR);
+            }
+            else
+            {
+                Red EJERCICIO = new Red();
+                EJERCICIO = netEJERCICIO(EJERCICIO);
+                activeNet(EJERCICIO);
+            }
+
+        }
+        public void colorOutput(Red red)
+        {
+            for (int j = 0; j < dgverdad.Rows.Count; j++)
+            {
+                for (int i = red.inputs; i < dgverdad.Columns.Count; i++)
+                    dgverdad.Rows[j].Cells[i].Style.BackColor = Color.Beige;
+            }
+        }
+        public Red netEJERCICIO(Red red)
+        {
+            int entradas = 2, salidas = 2;
+            createTable(entradas, salidas);
+
+            double[] valEntradas = new double[entradas];
+            for (int i = 0; i < entradas; i++) // se toman las entradas de la fila 0
+                valEntradas[i] = Convert.ToDouble(dgverdad.Rows[0].Cells[i].Value);
+
+            //Crear la Red
+
+            red = new Red() { capa = 4, inputs = 2 };
+
+            int[] numNeuronas = new int[] { 2, 2, 2 }; //a partir de capa 1
+
+            red.createUmbral(numNeuronas);
+            for (int i = 0; i < red.listCapas.Count; i++) //se llenan los vectores de los umbrales de cada capa
+                red.fillUmbral(0.5, i);
+
+            red.insertInput(valEntradas);
+
+            red.createPesos();
+            for (int i = 0; i < red.listPesos.Count; i++)
+                red.fillPesos(1, i);
+
+            return red;
+        }
+        public Red netXOR(Red red)
+        {
             int entradas = 2, salidas = 1;
             createTable(entradas, salidas);
 
             double[] valEntradas = new double[entradas];
-            //double[] valEntradas = new double[] {0,0};
-            for (int i = 0; i < entradas; i++)
+            for (int i = 0; i < entradas; i++) // se toman las entradas de la fila 0
                 valEntradas[i] = Convert.ToDouble(dgverdad.Rows[0].Cells[i].Value);
 
-            //crear la Red
+            //Crear la Red
 
-            Red red = new Red() { capa = 3 };
+            red = new Red() { capa = 3, inputs = 2 };
 
-            int[] numNeuronas = new int[] { 2, 1 };
+            int[] numNeuronas = new int[] { 2, 1 }; //a partir de capa 1
             List<double[]> listUmbral = new List<double[]> { new double[] { -1.90289, -4.127002 }, new double[] { -2.570539 } };
             List<double[,]> listPesos = new List<double[,]> { new double[,] { { 5.191129, 2.758669 }, { 5.473012, 2.769596 } }, new double[,] { { 5.839709 }, { -6.186834 } } };
+            //IMPORTANTE: el tamano de las matrices en listPesos debe ser de tamano_vectorUmbral_capa_n x tamano_vectorUmbral_capa_n+1
+            //o de otra forma: no_neuronas_capa_n x no_neuronas_capa_n+1
+            //solo hacerlo cuando los valores de los pesos son predeterminados
 
             red.createUmbral(numNeuronas);
-            for (int i = 0; i < listUmbral.Count; i++)
+            for (int i = 0; i < listUmbral.Count; i++) //se llenan los vectores de los umbrales de cada capa
                 red.fillUmbral(listUmbral[i], i);
 
             red.insertInput(valEntradas);
@@ -46,20 +98,40 @@ namespace Perceptron_Multicapa
             for (int i = 0; i < listPesos.Count; i++)
                 red.fillPesos(listPesos[i], i);
 
+            return red;
+        }
+        private void activeNet(Red red)
+        {
+            int entradas = red.listCapas[0].Umbral.Length;
+            double[] valEntradas = new double[entradas];
+            int fila = 1;
+            lbres.Items.Clear();
+
             //pasar las entradas a la Red y activar las neuronas
-
-            lbres.Items.Add("active:");
-
             while (fila <= dgverdad.Rows.Count)
             {
+                lbres.Items.Add("Patrón no. " + fila);
+                lbres.Items.Add("");
                 for (int i = 1; i < red.capa; i++)
-                    red.activaNeurona(i, "sigmoide");
-                for (int i = 0; i < red.listActive.Count; i++)
                 {
-                    foreach (double val in red.listActive[i])
+                    lbres.Items.Add("Capa No. " + i);
+                    lbres.Items.Add("");
+                    red.activaNeurona(i, "sigmoide");
+                    for (int j = 0; j < red.listActive[i - 1].Length; j++)
+                        lbres.Items.Add("C(" + i + ").ac(" + j + ") = " + red.listActive[i - 1][j]);
+                    if (i == red.capa - 1)
                     {
-                        lbres.Items.Add(val);
+                        lbres.Items.Add("");
+                        lbres.Items.Add("Salida del patrón " + fila + ":");
+                        lbres.Items.Add("");
+                        for (int j = 0; j < red.listActive[i - 1].Length; j++)
+                        {
+                            lbres.Items.Add("y(" + j + ") = " + red.listActive[i - 1][j]);
+                            for (int sal = entradas; sal < dgverdad.Columns.Count; sal++)
+                                dgverdad.Rows[fila - 1].Cells[sal].Value = red.listActive[i - 1][j];
+                        }
                     }
+                    lbres.Items.Add("");
                 }
                 if (fila == dgverdad.Rows.Count) break;
                 red.listActive.Clear();
@@ -70,7 +142,7 @@ namespace Perceptron_Multicapa
                 fila++;
             }
 
-
+            colorOutput(red);
         }
         private void createTable(int entrada, int salidas)
         {
@@ -87,7 +159,7 @@ namespace Perceptron_Multicapa
                 dgverdad.Columns.Add("entrada".Insert(7, i.ToString()), column_name);
             }
             //dgverdad.Columns.Add("salida", "Y"); Se anaden las salidas
-            for(int i = 0; i < salidas; i++)
+            for (int i = 0; i < salidas; i++)
             {
                 column_name = "Y".Insert(1, (i + 1).ToString());
                 dgverdad.Columns.Add("salida".Insert(6, i.ToString()), column_name);
@@ -137,96 +209,5 @@ namespace Perceptron_Multicapa
                 power--;
             }
         }
-    }
-    public class Capa
-    {
-        public int neuronas { get; set; }
-        public double[] Umbral { get; set; }
-
-    }
-    public class Peso
-    {
-        public double[,] W { get; set; }
-
-    }
-    public class Red
-    {
-        public double[] entradas { get; set; }
-        public int capa { get; set; }
-        public List<Capa> listCapas { get; set; }
-        public List<Peso> listPesos { get; set; }
-        public List<double[]> listActive { get; set; }
-
-        public Red() //parametros de los valores de las entradas y cuantas capas tiene la red
-        {
-            listCapas = new List<Capa>();
-            listPesos = new List<Peso>();
-            listActive = new List<double[]>();
-        }
-        public void insertInput(double[] ints)
-        {
-            entradas = ints;
-            listCapas.Insert(0, new Capa() { neuronas = entradas.Length, Umbral = entradas }); //capa 0
-        }
-        public void deleteInput()
-        {
-            listCapas.RemoveAt(0);
-        }
-        public void createUmbral(int[] numNeuro) //a partir de capa 1, parametro = numero de neuronas
-        {
-            for (int i = 0; i < capa - 1; i++)
-            {
-                listCapas.Add(new Capa() { neuronas = numNeuro[i] });
-            }
-        }
-        public void fillUmbral(double[] valuesUmbral, int capaU) //parametro vector con los valores de cada neurona y en que capa
-        {
-            listCapas[capaU].Umbral = valuesUmbral;
-        }
-        public void createPesos()
-        {
-            for(int i = 0; i < listCapas.Count - 1; i++)
-            {
-                listPesos.Add(new Peso() { W = new double[listCapas[i].Umbral.Length, listCapas[i + 1].Umbral.Length] });
-            }
-        }
-        public void fillPesos(double w, int capa) //llena todos los pesos de un solo valor
-        {
-            for (int i = 0; i < listPesos[capa].W.GetUpperBound(0) + 1; i++) //filas
-            {
-                for (int j = 0; j < listPesos[capa].W.GetUpperBound(1) + 1; j++) //columnas
-                {
-                    listPesos[capa].W.SetValue(w, i, j);
-                }
-            }
-        }
-        public void fillPesos(double[,] w, int capa) //lena los pesos recibiendo una matriz
-        {
-            listPesos[capa].W = w;
-        }
-        public void activaNeurona(int capa, string funcion)
-        {
-            double[] active = new double[listCapas[capa].Umbral.Length];
-            int aux = 0; double sum = 0;
-
-            for(int j = 0; j < listCapas[capa].Umbral.Length; j++)
-            {
-                for (int i = 0; i < listCapas[capa - 1].Umbral.Length; i++)
-                {
-                    sum += capa == 1 ? listCapas[capa - 1].Umbral[i] * listPesos[capa - 1].W[i, j] : listActive[capa - 2][i] * listPesos[capa - 1].W[i, j];
-                }
-                sum += listCapas[capa].Umbral[aux];
-                sum = funcion == "sigmoide" ? Sigmoide(sum) : Math.Tanh(sum);
-                active[aux] = sum;
-                sum = 0; aux++;
-            }
-
-            listActive.Add(active);
-        }
-        private double Sigmoide (double x)
-        {
-            return 1 / (1 + Math.Exp(-x));
-        }
-    }
-    
+    } 
 }
