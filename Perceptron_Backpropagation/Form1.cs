@@ -34,7 +34,9 @@ namespace Perceptron_Backpropagation
             for (int i = 0; i < capas_ocultas - 1; i++) // -1 porque el dgv agrega por si mismo una fila de mas
             {
                 dgvcapsocul.Rows.Add();
+                dgvcapsocul.Rows[i].Cells[0].Value = i + 1;
             }
+            dgvcapsocul.Rows[dgvcapsocul.RowCount - 1].Cells[0].Value = dgvcapsocul.RowCount;
         }
         public void printUW(Red red)
         {
@@ -271,7 +273,8 @@ namespace Perceptron_Backpropagation
                 if(epoca >= epocas)
                 {
                     lbres.Items.Add("Salida por Epoca");
-                    lbres.Items.Add("e = "+sum_err);
+                    lbres.Items.Add("Epocas: " + epoca);
+                    lbres.Items.Add("e = " + sum_err);
                     break;
                 }
 
